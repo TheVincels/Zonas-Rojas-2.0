@@ -1,14 +1,15 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portal de Conductor · Mapa Operativo de Reparto Nocturno (Corte 6:30 PM)</title>
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700;1,800&display=swap" rel="stylesheet" />
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Portal de Conductor · Mapa Operativo de Reparto Nocturno (Corte 6:30 PM)</title>
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700;1,800&amp;display=swap" rel="stylesheet"/>
+<style>
     body {
       font-family: 'Inter', sans-serif;
       background-color: #050505;
@@ -86,552 +87,464 @@
       padding: 2px;
     }
   </style>
-<style>
-[hidden]{display:none!important}body{background:#09090d;padding-bottom:100px}header{z-index:1000!important;padding-top:6px!important;padding-bottom:6px!important}header>.shipsat-card{padding:8px 12px!important;border-radius:14px!important;box-shadow:none!important}header h1{font-size:15px!important;font-style:normal!important}header p{font-size:11px!important}header .w-11{width:30px!important;height:30px!important;font-size:14px!important}header h1+span{font-size:9px!important}.portal-page{display:flex;flex-direction:column;gap:12px}.portal-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:11px}.portal-map-section,.portal-map-column{display:flex!important;flex-direction:column!important;gap:12px}.portal-map-frame{display:flex;flex-direction:column;height:480px;min-height:350px;overflow:hidden}#map{height:100%!important;min-height:280px;width:100%;flex:1;isolation:isolate}.shipsat-glow-text{text-shadow:none;font-style:normal}.shipsat-bottom-nav{z-index:1500!important}.portal-news-directory{display:grid;grid-template-columns:1fr 2fr;gap:12px}.portal-btn{background:#25252e;border:1px solid #52525b;border-radius:9px;padding:8px 12px;color:white;font-size:12px;cursor:pointer}.portal-primary{background:#b91c1c}#sectionValidador{padding:12px 16px!important}#sectionValidador h2{font-size:19px!important}.red-editor{padding:12px 16px;font-size:12px}.red-editor input{background:#09090d;border:1px solid #52525b;border-radius:8px;padding:9px;color:white;margin:6px 6px 6px 0;max-width:100%}.red-editor summary{cursor:pointer;font-weight:700}.red-actions{display:flex;gap:8px;flex-wrap:wrap}#mapLoadMessage{padding:10px 14px;background:#302014;border:1px solid #80522d;border-radius:12px;font-size:12px}#profileEditor{border:1px solid #52525b;border-radius:15px;color:white;background:#18181b;padding:22px;width:min(440px,94vw)}#profileEditor::backdrop{background:#000b}#profileEditor input{display:block;width:100%;background:#09090d;border:1px solid #52525b;padding:10px;border-radius:9px;margin:6px 0 14px;color:white}#manualRows>div{display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid #3f3f46;padding:8px 0}.red-mode #map{cursor:crosshair}@media(max-width:640px){header h1+span{display:none}.portal-news-directory{grid-template-columns:1fr}.portal-map-frame{height:420px}#sectionValidador>div:first-child>div:last-child{display:none}header p{max-width:58vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
-</style></head>
+<style>[hidden]{display:none!important}body{background:#09090d;padding-bottom:100px}header{position:sticky!important;top:0;z-index:1000!important;padding-top:6px!important;padding-bottom:6px!important;background:#09090df5!important}header>.shipsat-card{padding:8px 12px!important;border-radius:14px!important;box-shadow:none!important}header h1{font-size:15px!important;font-style:normal!important}header p{font-size:11px!important}header .w-11{width:30px!important;height:30px!important;font-size:14px!important}header h1+span{font-size:9px!important}.portal-page{display:flex;flex-direction:column;gap:12px}.portal-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:11px}.portal-tools>div:last-child{margin-left:auto;gap:12px}.portal-map-section,.portal-map-column{display:flex!important;flex-direction:column!important;gap:12px}.portal-map-frame{display:flex;flex-direction:column;height:480px;min-height:350px;overflow:hidden}#map{height:100%!important;min-height:280px;width:100%;flex:1;isolation:isolate}.shipsat-glow-text{text-shadow:none;font-style:normal}.shipsat-bottom-nav{z-index:1500!important;border-radius:22px;box-shadow:0 -4px 25px #0006}.bottom-nav-btn{border-radius:16px}.portal-directory{display:grid;grid-template-columns:1fr 2fr;gap:12px}.portal-btn{background:#25252e;border:1px solid #52525b;border-radius:9px;padding:8px 12px;color:white;font-size:12px;cursor:pointer}.portal-btn.primary{background:#b91c1c;border-color:#ef4444}.portal-btn:focus-visible,summary:focus-visible{outline:2px solid #fb7185;outline-offset:3px}#sectionValidador{padding:12px 16px!important}#sectionValidador h2{font-size:19px!important}details summary{cursor:pointer;font-size:12px;font-weight:600;padding:6px 0}.red-editor{padding:10px 16px;font-size:12px}.red-fields{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:10px}.red-editor label{display:flex;flex-direction:column;gap:5px;margin-top:8px}.red-editor input{background:#09090d;border:1px solid #52525b;border-radius:8px;padding:9px;color:white;width:100%}.red-editor summary span{font-weight:400;color:#a1a1aa;margin-left:8px}.red-editor p,.portal-note{font-size:11px;color:#a1a1aa;margin:10px 0}.red-actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 6px}#mapMessage{padding:10px 14px;background:#302014;border:1px solid #80522d;border-radius:12px;font-size:12px}#profileEditor{border:1px solid #52525b;border-radius:15px;color:white;background:#18181b;padding:22px;width:min(440px,94vw)}#profileEditor::backdrop{background:#000b}#profileEditor input{display:block;width:100%;background:#09090d;border:1px solid #52525b;padding:10px;border-radius:9px;margin:6px 0 14px;color:white}#profileEditor h2{font-size:19px;margin-bottom:14px}#manualRows>div{display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid #3f3f46;padding:8px 0}#manualRows>div>div{display:flex;gap:6px}.red-mode #map{cursor:crosshair}.red-mode #redEditor{border-color:#ef4444}#portalToast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);padding:10px 14px;background:#27272a;color:#fff;border-radius:12px;z-index:3000;font-size:12px;max-width:90vw}@media(max-width:640px){header h1+span{display:none}.portal-directory,.red-fields{grid-template-columns:1fr}.portal-map-frame{height:420px}#sectionValidador>div:first-child>div:last-child{display:none}header p{max-width:58vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.portal-tools>div:last-child{width:100%;margin-left:0;justify-content:flex-start}.red-editor summary span{display:block;margin:0;font-size:10px}.portal-map-frame>div:first-child>div:first-child{font-size:10px;gap:6px}}</style></head>
 <body class="min-h-screen flex flex-col pb-24 selection:bg-red-600 selection:text-white">
-
-  <!-- Top Crimson Accent Strip -->
-  <div class="h-1.5 w-full bg-gradient-to-r from-red-900 via-red-600 to-red-900"></div>
-
-  <!-- Portal de Conductor Header -->
-  <header class="max-w-7xl w-full mx-auto px-3 sm:px-4 pt-3 pb-2 sticky top-0 z-30 bg-[#050505]/90 backdrop-blur-md">
-    <div class="shipsat-card px-4 py-3 flex flex-wrap items-center justify-between gap-3">
-      <div class="flex items-center gap-3">
-        <div class="w-11 h-11 rounded-full bg-gradient-to-b from-red-500 to-red-800 border border-red-400/50 flex items-center justify-center text-white font-extrabold text-lg shadow-lg shadow-red-900/40">
+<!-- Top Crimson Accent Strip -->
+<div class="h-1.5 w-full bg-gradient-to-r from-red-900 via-red-600 to-red-900"></div>
+<!-- Portal de Conductor Header -->
+<header class="max-w-7xl w-full mx-auto px-3 sm:px-4 pt-3 pb-2 sticky top-0 z-30 bg-[#050505]/90 backdrop-blur-md">
+<div class="shipsat-card px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-full bg-gradient-to-b from-red-500 to-red-800 border border-red-400/50 flex items-center justify-center text-white font-extrabold text-lg shadow-lg shadow-red-900/40">
           J
         </div>
-        <div>
-          <div class="flex items-center gap-2 flex-wrap">
-            <h1 class="text-lg sm:text-xl text-white shipsat-title">
+<div>
+<div class="flex items-center gap-2 flex-wrap">
+<h1 class="text-lg sm:text-xl text-white shipsat-title" id="portalTitle">
               Portal de conductor
             </h1>
-            <span class="text-[11px] bg-red-950/90 text-red-300 border border-red-700/50 px-2.5 py-0.5 rounded-full font-semibold">
+<span class="text-[11px] bg-red-950/90 text-red-300 border border-red-700/50 px-2.5 py-0.5 rounded-full font-semibold">
               Bodega Aurrera, Jojutla Galeana [5336]
             </span>
-          </div>
-          <p class="text-xs text-neutral-400">
-            Hola, <span class="text-neutral-200 font-medium">jose24215@shipsat.mx</span> · Colaboración de Zonas de Alto Riesgo (Corte 6:30 PM)
-          </p>
-        </div>
-      </div>
+</div>
+<p class="text-xs text-neutral-400"><span class="text-neutral-200 font-medium" id="portalEmail">jose24215@shipsat.mx</span></p>
+</div>
+</div>
+<!-- Right Status & Time Controls -->
 
-      <!-- Right Status & Time Controls -->
-      <div class="flex flex-wrap items-center gap-2.5">
-        <div id="clockBadge" class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold border">
-          <span id="clockDot" class="w-2.5 h-2.5 rounded-full"></span>
-          <span id="clockText">Cargando hora...</span>
-        </div>
+<button class="portal-btn" id="editPortal" type="button">✎ Editar</button></div>
+</header>
+<!-- Main Content Container -->
+<main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-4 py-2 space-y-4">
+<!-- STEP 1: Automatic Google Maps Link (Including Short Links maps.app.goo.gl) / Coordinates / Address Risk Evaluator -->
 
-        <button id="toggleSimBtn" class="px-3.5 py-1.5 rounded-full bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-xs font-semibold text-neutral-200 transition">
-          Simular 6:30 PM (Oscurecer)
-        </button>
+<!-- STEP 2: Main Map & Zone Directory Grid (Preserving all existing map features) -->
 
-        <div class="flex items-center gap-2 bg-neutral-900/90 border border-neutral-800 px-3 py-1.5 rounded-full">
-          <label for="opacitySlider" class="text-[11px] text-neutral-300 whitespace-nowrap">Mancha:</label>
-          <input id="opacitySlider" type="range" min="10" max="65" value="28" class="w-16 sm:w-20 accent-red-600 cursor-pointer" />
-          <span id="opacityVal" class="text-[11px] font-mono text-neutral-400 w-8">28%</span>
-        </div>
-      </div>
-    </div>
-  </header>
+<!-- STEP 3: NEW SECTION - Agregar Noticias de Facebook y Reportes Operativos de Calle -->
 
-  <!-- Main Content Container -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-4 py-2 space-y-4">
+<!-- STEP 4: Comunicados / Live Security News Scanner & Facebook/Media Quick Links -->
 
-    <!-- STEP 1: Automatic Google Maps Link (Including Short Links maps.app.goo.gl) / Coordinates / Address Risk Evaluator -->
-    <section id="sectionValidador" class="shipsat-card p-4 sm:p-5">
-      <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
-        <div>
-          <span class="shipsat-pill-tag">VALIDADOR AUTOMÁTICO DE PEDIDOS (SOPORTA LINKS ACORTADOS)</span>
-          <h2 class="text-xl sm:text-2xl text-white shipsat-glow-text mt-1">
-            Verificar Link de Maps o Dirección
-          </h2>
-        </div>
-        <div class="text-xs text-neutral-400">
+<div class="portal-page" id="pagina-mapa"><section class="shipsat-card p-4 sm:p-5" id="sectionValidador">
+<div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+<div>
+<span class="shipsat-pill-tag">VALIDADOR AUTOMÁTICO DE PEDIDOS (SOPORTA LINKS ACORTADOS)</span>
+<h2 class="text-xl sm:text-2xl text-white shipsat-glow-text mt-1">Verificar link o colonia</h2>
+</div>
+<div class="text-xs text-neutral-400">
           Acepta links cortos (<code class="text-red-300">maps.app.goo.gl/...</code>), links completos, texto compartido de WhatsApp o colonia
         </div>
-      </div>
-
-      <!-- Input Bar -->
-      <div class="flex flex-col sm:flex-row gap-2.5">
-        <div class="relative flex-1">
-          <input
-            id="mapsLinkInput"
-            type="text"
-            placeholder="Pega aquí tu link acortado (ej. https://maps.app.goo.gl/GtpeLsgdSH3D3tXw7), link largo, coordenadas o colonia..."
-            class="w-full bg-black/80 border border-neutral-700 focus:border-red-500 rounded-2xl px-4 py-3 text-xs sm:text-sm text-white placeholder-neutral-500 outline-none transition"
-          />
-          <button id="clearMapsBtn" class="hidden absolute right-3.5 top-3 text-neutral-400 hover:text-white text-sm">✕</button>
-        </div>
-        <button
-          id="evaluateLinkBtn"
-          class="px-6 py-3 rounded-2xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold text-xs sm:text-sm shadow-lg shadow-red-900/40 transition whitespace-nowrap"
-        >
+</div>
+<!-- Input Bar -->
+<div class="flex flex-col sm:flex-row gap-2.5">
+<div class="relative flex-1">
+<input class="w-full bg-black/80 border border-neutral-700 focus:border-red-500 rounded-2xl px-4 py-3 text-xs sm:text-sm text-white placeholder-neutral-500 outline-none transition" id="mapsLinkInput" placeholder="Link de Maps, coordenadas o nombre de colonia…" type="text"/>
+<button class="hidden absolute right-3.5 top-3 text-neutral-400 hover:text-white text-sm" id="clearMapsBtn">✕</button>
+</div>
+<button class="px-6 py-3 rounded-2xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold text-xs sm:text-sm shadow-lg shadow-red-900/40 transition whitespace-nowrap" id="evaluateLinkBtn">
           Evaluar Pedido
         </button>
-      </div>
-
-      <!-- Status / Resolver Progress Pill -->
-      <div id="shortLinkResolverStatus" class="hidden mt-2.5 px-3.5 py-2 rounded-xl bg-neutral-900/90 border border-red-500/40 text-xs text-neutral-200 flex flex-wrap items-center justify-between gap-2">
-        <span id="shortLinkStatusText">Desencriptando link acortado de Google Maps...</span>
-        <div id="shortLinkAssistBox" class="hidden flex flex-wrap items-center gap-1.5">
-          <span class="text-[11px] text-amber-300">Selecciona la localidad del link para guardar y dictaminar:</span>
-          <select id="shortLinkQuickLocality" class="bg-black border border-neutral-700 rounded-lg px-2 py-1 text-xs text-white outline-none">
-            <option value="">-- Elegir localidad del pedido --</option>
-            <option value="Xoxocotla">Xoxocotla (Zona Roja)</option>
-            <option value="Santa Rosa 30">Santa Rosa 30 (Zona Roja)</option>
-            <option value="Huatecalco">Huatecalco (Zona Roja)</option>
-            <option value="El Higuerón">El Higuerón (Zona Roja)</option>
-            <option value="Pedro Amaro">Pedro Amaro (Zona Roja)</option>
-            <option value="Tequesquitengo">Tequesquitengo Interior (Zona Roja)</option>
-            <option value="Hornos Cuates">Hornos Cuates (Zona Roja)</option>
-            <option value="Tlatenchi">Tlatenchi Pueblo (Zona Roja)</option>
-            <option value="Tetelpa">Tetelpa (Zona Roja)</option>
-            <option value="Galeana Valle del Sol">Galeana - Valle del Sol (Zona Roja)</option>
-            <option value="Chiverías Interior">Chiverías Calles Interiores (Zona Roja)</option>
-            <option value="Chiverías Carretera">Chiverías Carretera Principal (Precaución)</option>
-            <option value="Villas Jojutla">Villas Jojutla (Zona Verde)</option>
-            <option value="Villas Aqua">Villas Aqua (Zona Verde)</option>
-            <option value="Teques Proa">Teques Proa (Zona Verde)</option>
-            <option value="Unidad Morelos">Unidad Morelos (Zona Verde)</option>
-            <option value="Jojutla Centro">Jojutla Centro (Zona Verde)</option>
-            <option value="Zacatepec Centro">Zacatepec Centro (Zona Verde)</option>
-            <option value="Valle del Sol Tlatenchi">Valle del Sol Tlatenchi (Zona Verde)</option>
-            <option value="Galeana Centro">Galeana Centro (Zona Verde)</option>
-          </select>
-          <a id="openShortLinkExternal" href="https://maps.app.goo.gl/GtpeLsgdSH3D3tXw7" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-[11px] font-semibold">
+</div>
+<!-- Status / Resolver Progress Pill -->
+<div class="hidden mt-2.5 px-3.5 py-2 rounded-xl bg-neutral-900/90 border border-red-500/40 text-xs text-neutral-200 flex flex-wrap items-center justify-between gap-2" id="shortLinkResolverStatus">
+<span id="shortLinkStatusText">Desencriptando link acortado de Google Maps...</span>
+<div class="hidden flex flex-wrap items-center gap-1.5" id="shortLinkAssistBox">
+<span class="text-[11px] text-amber-300">Selecciona la localidad del link para guardar y dictaminar:</span>
+<select class="bg-black border border-neutral-700 rounded-lg px-2 py-1 text-xs text-white outline-none" id="shortLinkQuickLocality">
+<option value="">-- Elegir localidad del pedido --</option>
+<option value="Xoxocotla">Xoxocotla (Zona Roja)</option>
+<option value="Santa Rosa 30">Santa Rosa 30 (Zona Roja)</option>
+<option value="Huatecalco">Huatecalco (Zona Roja)</option>
+<option value="El Higuerón">El Higuerón (Zona Roja)</option>
+<option value="Pedro Amaro">Pedro Amaro (Zona Roja)</option>
+<option value="Tequesquitengo">Tequesquitengo Interior (Zona Roja)</option>
+<option value="Hornos Cuates">Hornos Cuates (Zona Roja)</option>
+<option value="Tlatenchi">Tlatenchi Pueblo (Zona Roja)</option>
+<option value="Tetelpa">Tetelpa (Zona Roja)</option>
+<option value="Galeana Valle del Sol">Galeana - Valle del Sol (Zona Roja)</option>
+<option value="Chiverías Interior">Chiverías Calles Interiores (Zona Roja)</option>
+<option value="Chiverías Carretera">Chiverías Carretera Principal (Precaución)</option>
+<option value="Villas Jojutla">Villas Jojutla (Zona Verde)</option>
+<option value="Villas Aqua">Villas Aqua (Zona Verde)</option>
+<option value="Teques Proa">Teques Proa (sin excepción verde)</option>
+<option value="Unidad Morelos">Unidad Morelos (Zona Verde)</option>
+<option value="Jojutla Centro">Jojutla Centro (Zona Verde)</option>
+<option value="Zacatepec Centro">Zacatepec Centro (Zona Verde)</option>
+<option value="Valle del Sol Tlatenchi">Valle del Sol Tlatenchi (Zona Verde)</option>
+<option value="Galeana Centro">Galeana Centro (Zona Verde)</option>
+<option value="San José">San José · Puente de Ixtla (Zona Roja)</option><option value="Tlaquiltenango Centro">Tlaquiltenango Centro · Tlaquiltenango (Zona Roja)</option><option value="Los Presidentes">Los Presidentes · Tlaquiltenango (Zona Roja)</option><option value="Chacampalco">Chacampalco · Tlaquiltenango (Zona Roja)</option><option value="Tlaltizapán Centro">Tlaltizapán Centro · Tlaltizapán (Zona Roja)</option><option value="Otilio">Otilio · Zacatepec (Zona Roja)</option><option value="San Miguel 30">San Miguel 30 · Tlaltizapán (Zona Roja)</option><option value="Benito Juárez">Benito Juárez · Zacatepec (Zona Roja)</option><option value="20 de Noviembre">20 de Noviembre · Zacatepec (Zona Roja)</option><option value="Emiliano Zapata">Emiliano Zapata · Zacatepec (Zona Roja)</option><option value="Tecnológico de Zacatepec y colonias cercanas">Tecnológico de Zacatepec y colonias cercanas · Zacatepec (Zona Roja)</option></select>
+<a class="px-2.5 py-1 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-[11px] font-semibold" href="https://maps.app.goo.gl/GtpeLsgdSH3D3tXw7" id="openShortLinkExternal" rel="noopener noreferrer" target="_blank">
             Ver en Maps ↗
           </a>
-        </div>
-      </div>
+</div>
+</div>
+<!-- Quick Sample Links to Test Immediately -->
 
-      <!-- Quick Sample Links to Test Immediately -->
-      <div class="flex flex-wrap items-center gap-1.5 mt-3 text-[11px]">
-        <span class="text-neutral-400 mr-1">Probar ejemplo rápido:</span>
-        <button data-sample="https://maps.app.goo.gl/GtpeLsgdSH3D3tXw7" class="sample-link-btn px-2.5 py-1 rounded-full bg-red-600/30 hover:bg-red-600/50 border border-red-500/60 text-red-200 font-semibold transition">
-          Link corto: maps.app.goo.gl/GtpeL...
-        </button>
-        <button data-sample="https://www.google.com/maps?q=18.6851,-99.2461 (Pedido Xoxocotla)" class="sample-link-btn px-2.5 py-1 rounded-full bg-red-950/50 hover:bg-red-900/60 border border-red-800/50 text-red-300 transition">
-          Link Xoxocotla (Riesgo)
-        </button>
-        <button data-sample="https://www.google.com/maps/@18.6523,-99.2185,17z (Carretera Principal Chiverías)" class="sample-link-btn px-2.5 py-1 rounded-full bg-amber-950/50 hover:bg-amber-900/60 border border-amber-800/50 text-amber-300 transition">
-          Link Chiverías Carretera (Precaución)
-        </button>
-        <button data-sample="https://www.google.com/maps/place/18.6023,-99.2002 (Villas Teques Aqua)" class="sample-link-btn px-2.5 py-1 rounded-full bg-emerald-950/50 hover:bg-emerald-900/60 border border-emerald-800/50 text-emerald-300 transition">
-          Link Villas Aqua (No riesgoso)
-        </button>
-        <button data-sample="https://www.google.com/maps?q=18.5773,-99.1803 (El Higuerón Jojutla)" class="sample-link-btn px-2.5 py-1 rounded-full bg-red-950/50 hover:bg-red-900/60 border border-red-800/50 text-red-300 transition">
-          Link El Higuerón (Riesgo)
-        </button>
-      </div>
-
-      <!-- Verdict Card (Portal de Conductor Attendance-Style Card) -->
-      <div id="verdictContainer" class="hidden mt-4 shipsat-inner-card p-4 sm:p-5 transition-all">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div class="flex items-center gap-4">
-            <div id="verdictIconBox" class="w-14 h-14 rounded-full flex items-center justify-center text-2xl font-bold shrink-0 border-2">
+<!-- Verdict Card (Portal de Conductor Attendance-Style Card) -->
+<div class="hidden mt-4 shipsat-inner-card p-4 sm:p-5 transition-all" id="verdictContainer">
+<div class="flex flex-col md:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 rounded-full flex items-center justify-center text-2xl font-bold shrink-0 border-2" id="verdictIconBox">
               ✓
             </div>
-            <div>
-              <div id="verdictPill" class="inline-block px-3 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider mb-1">
+<div>
+<div class="inline-block px-3 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider mb-1" id="verdictPill">
                 RESULTADO
               </div>
-              <h3 id="verdictTitle" class="text-lg sm:text-xl text-white shipsat-title">
+<h3 class="text-lg sm:text-xl text-white shipsat-title" id="verdictTitle">
                 Dictamen del Pedido
               </h3>
-              <p id="verdictSubtitle" class="text-xs sm:text-sm text-neutral-300 mt-0.5"></p>
-              <div id="verdictReportWarning" class="hidden mt-2 px-3 py-1.5 rounded-xl bg-sky-950/70 border border-sky-500/50 text-sky-200 text-xs font-medium"></div>
-            </div>
-          </div>
-
-          <div class="w-full md:w-auto bg-black/50 border border-white/10 rounded-2xl px-4 py-3 text-center md:text-right">
-            <div class="text-[10px] tracking-widest uppercase text-neutral-400 font-semibold">ZONA DETECTADA</div>
-            <div id="verdictZoneName" class="text-sm sm:text-base font-extrabold text-white shipsat-title mt-0.5">-</div>
-            <div id="verdictCoordsText" class="text-[11px] font-mono text-neutral-400 mt-0.5"></div>
-          </div>
-        </div>
-
-        <div id="verdictActionBanner" class="mt-3 pt-3 border-t border-white/10 flex flex-wrap items-center justify-between gap-2 text-xs">
-          <span id="verdictRuleText" class="font-medium text-neutral-200"></span>
-          <button id="verdictZoomBtn" class="px-3.5 py-1.5 rounded-full bg-red-600 hover:bg-red-500 text-white font-bold text-xs transition">
+<p class="text-xs sm:text-sm text-neutral-300 mt-0.5" id="verdictSubtitle"></p>
+<div class="hidden mt-2 px-3 py-1.5 rounded-xl bg-sky-950/70 border border-sky-500/50 text-sky-200 text-xs font-medium" id="verdictReportWarning"></div>
+</div>
+</div>
+<div class="w-full md:w-auto bg-black/50 border border-white/10 rounded-2xl px-4 py-3 text-center md:text-right">
+<div class="text-[10px] tracking-widest uppercase text-neutral-400 font-semibold">ZONA DETECTADA</div>
+<div class="text-sm sm:text-base font-extrabold text-white shipsat-title mt-0.5" id="verdictZoneName">-</div>
+<div class="text-[11px] font-mono text-neutral-400 mt-0.5" id="verdictCoordsText"></div>
+</div>
+</div>
+<div class="mt-3 pt-3 border-t border-white/10 flex flex-wrap items-center justify-between gap-2 text-xs" id="verdictActionBanner">
+<span class="font-medium text-neutral-200" id="verdictRuleText"></span>
+<button class="px-3.5 py-1.5 rounded-full bg-red-600 hover:bg-red-500 text-white font-bold text-xs transition" id="verdictZoomBtn">
             Ubicar punto en el mapa
           </button>
-        </div>
-      </div>
-    </section>
+</div>
+</div>
+<details><summary>Ver ejemplos de consulta</summary><div class="flex flex-wrap items-center gap-1.5 mt-3 text-[11px]">
+<span class="text-neutral-400 mr-1">Probar ejemplo rápido:</span>
+<button class="sample-link-btn px-2.5 py-1 rounded-full bg-red-600/30 hover:bg-red-600/50 border border-red-500/60 text-red-200 font-semibold transition" data-sample="https://maps.app.goo.gl/GtpeLsgdSH3D3tXw7">
+          Link corto: maps.app.goo.gl/GtpeL...
+        </button>
+<button class="sample-link-btn px-2.5 py-1 rounded-full bg-red-950/50 hover:bg-red-900/60 border border-red-800/50 text-red-300 transition" data-sample="https://www.google.com/maps?q=18.6851,-99.2461 (Pedido Xoxocotla)">
+          Link Xoxocotla (Riesgo)
+        </button>
+<button class="sample-link-btn px-2.5 py-1 rounded-full bg-amber-950/50 hover:bg-amber-900/60 border border-amber-800/50 text-amber-300 transition" data-sample="https://www.google.com/maps/@18.6523,-99.2185,17z (Carretera Principal Chiverías)">
+          Link Chiverías Carretera (Precaución)
+        </button>
+<button class="sample-link-btn px-2.5 py-1 rounded-full bg-emerald-950/50 hover:bg-emerald-900/60 border border-emerald-800/50 text-emerald-300 transition" data-sample="https://www.google.com/maps/place/18.6023,-99.2002 (Villas Teques Aqua)">
+          Link Villas Aqua (No riesgoso)
+        </button>
+<button class="sample-link-btn px-2.5 py-1 rounded-full bg-red-950/50 hover:bg-red-900/60 border border-red-800/50 text-red-300 transition" data-sample="https://www.google.com/maps?q=18.5773,-99.1803 (El Higuerón Jojutla)">
+          Link El Higuerón (Riesgo)
+        </button>
+</div></details></section><div class="portal-tools">
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold border" id="clockBadge">
+<span class="w-2.5 h-2.5 rounded-full" id="clockDot"></span>
+<span id="clockText">Cargando hora...</span>
+</div>
+<button class="px-3.5 py-1.5 rounded-full bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-xs font-semibold text-neutral-200 transition" id="toggleSimBtn">
+          Simular 6:30 PM (Oscurecer)
+        </button>
+<div class="flex items-center gap-2 bg-neutral-900/90 border border-neutral-800 px-3 py-1.5 rounded-full">
+<label class="text-[11px] text-neutral-300 whitespace-nowrap" for="opacitySlider">Mancha:</label>
+<input class="w-16 sm:w-20 accent-red-600 cursor-pointer" id="opacitySlider" max="65" min="10" type="range" value="28"/>
+<span class="text-[11px] font-mono text-neutral-400 w-8" id="opacityVal">28%</span>
+</div>
+<div class="flex flex-wrap items-center justify-between gap-2 pt-1.5 border-t border-white/10 text-xs text-neutral-300">
+<label class="flex items-center gap-1.5 cursor-pointer">
+<input checked="" class="accent-red-600 rounded" id="chkRed" type="checkbox"/>
+<span>Manchas Rojas</span>
+</label>
+<label class="flex items-center gap-1.5 cursor-pointer">
+<input checked="" class="accent-emerald-500 rounded" id="chkGreen" type="checkbox"/>
+<span>Zonas Verdes</span>
+</label>
+<label class="flex items-center gap-1.5 cursor-pointer">
+<input checked="" class="accent-amber-500 rounded" id="chkNews" type="checkbox"/>
+<span>Alertas Noticias</span>
+</label>
+<label class="flex items-center gap-1.5 cursor-pointer">
+<input checked="" class="accent-red-500 rounded" id="chkLabels" type="checkbox"/>
+<span>Nombres fijos</span>
+</label>
+</div></div><details class="shipsat-card red-editor" id="redEditor"><summary>＋ Agregar zona roja <span>Dibuja un recuadro en el mapa</span></summary><form id="redForm"><div class="red-fields"><label>Nombre de la zona<input id="redName" maxlength="90" placeholder="Colonia o tramo" required=""/></label><label>Municipio / localidad<input id="redTown" maxlength="90" placeholder="Ej. Tlaltizapán" required=""/></label><label>Motivo o referencia<input id="redNote" maxlength="300" placeholder="Opcional"/></label></div><div class="red-actions"><button class="portal-btn primary" id="redStart" type="button">Dibujar recuadro</button><button class="portal-btn" id="redCancel" type="button">Cancelar dibujo</button><button class="portal-btn primary" type="submit">Guardar zona roja</button></div><p id="redStatus" role="status">Pulsa Dibujar recuadro y toca dos esquinas opuestas del área.</p><p>Las zonas manuales se guardan en este navegador, no en GitHub ni en otros dispositivos. Son clasificaciones operativas, no alertas oficiales.</p></form><div id="manualRows"></div></details><p class="portal-note">Actualización: 11 zonas rojas registradas por nombre, sin perímetros nuevos inventados. Puedes delimitarlas con esta herramienta. La cobertura conjunta preexistente de 20 de Noviembre y Emiliano Zapata pasa a roja. El Proa ya no es verde.</p><div hidden="" id="mapMessage" role="status"></div><section class="portal-map-section" id="sectionMapa">
+<!-- Left Column: Zone Filter & Directory -->
 
-    <!-- STEP 2: Main Map & Zone Directory Grid (Preserving all existing map features) -->
-    <section id="sectionMapa" class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-
-      <!-- Left Column: Zone Filter & Directory -->
-      <div class="lg:col-span-4 flex flex-col gap-3 order-2 lg:order-1">
-        <div class="shipsat-card p-3.5 flex flex-col gap-3">
-          <div class="flex items-center justify-between">
-            <div>
-              <span class="shipsat-pill-tag">DIRECTORIO DE COLONIAS</span>
-              <h2 class="text-base text-white shipsat-title mt-1">Buscador de Zonas</h2>
-            </div>
-            <span class="text-[11px] text-neutral-400 font-semibold" id="zoneCounter">25 zonas activas</span>
-          </div>
-
-          <div class="relative">
-            <input
-              id="searchInput"
-              type="text"
-              placeholder="Filtrar colonia, pueblo o fraccionamiento..."
-              class="w-full bg-black/80 border border-neutral-800 focus:border-red-500 rounded-xl px-3 py-2 text-xs text-white placeholder-neutral-500 outline-none transition"
-            />
-            <button id="clearSearchBtn" class="hidden absolute right-2.5 top-2 text-xs text-neutral-400 hover:text-white">✕</button>
-          </div>
-
-          <!-- Filter Tabs -->
-          <div class="grid grid-cols-4 gap-1.5 bg-black/80 p-1 rounded-xl border border-neutral-800 text-[11px] font-semibold">
-            <button data-filter="all" class="filter-tab py-1.5 rounded-lg bg-red-600 text-white transition">Todas</button>
-            <button data-filter="red" class="filter-tab py-1.5 rounded-lg text-red-400 hover:bg-neutral-900 transition">Rojas (11)</button>
-            <button data-filter="green" class="filter-tab py-1.5 rounded-lg text-emerald-400 hover:bg-neutral-900 transition">Verdes (9)</button>
-            <button data-filter="news" class="filter-tab py-1.5 rounded-lg text-amber-400 hover:bg-neutral-900 transition">Noticias (5)</button>
-          </div>
-
-          <!-- Layer Checkboxes -->
-          <div class="flex flex-wrap items-center justify-between gap-2 pt-1.5 border-t border-white/10 text-xs text-neutral-300">
-            <label class="flex items-center gap-1.5 cursor-pointer">
-              <input type="checkbox" id="chkRed" checked class="accent-red-600 rounded" />
-              <span>Manchas Rojas</span>
-            </label>
-            <label class="flex items-center gap-1.5 cursor-pointer">
-              <input type="checkbox" id="chkGreen" checked class="accent-emerald-500 rounded" />
-              <span>Zonas Verdes</span>
-            </label>
-            <label class="flex items-center gap-1.5 cursor-pointer">
-              <input type="checkbox" id="chkNews" checked class="accent-amber-500 rounded" />
-              <span>Alertas Noticias</span>
-            </label>
-            <label class="flex items-center gap-1.5 cursor-pointer">
-              <input type="checkbox" id="chkLabels" checked class="accent-red-500 rounded" />
-              <span>Nombres fijos</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- Scrollable Zone List -->
-        <div id="zoneList" class="shipsat-card p-2.5 flex-1 overflow-y-auto max-h-[470px] space-y-2">
-          <!-- Rendered dynamically -->
-        </div>
-      </div>
-
-      <!-- Right Column: Leaflet Map & Rules Summary -->
-      <div class="lg:col-span-8 flex flex-col gap-3 order-1 lg:order-2">
-        <div class="shipsat-card overflow-hidden flex flex-col relative h-[480px] sm:h-[550px]">
-          <!-- Map Legend Bar -->
-          <div class="bg-black/90 border-b border-white/10 px-3.5 py-2.5 flex flex-wrap items-center justify-between gap-2 z-20">
-            <div class="flex flex-wrap items-center gap-3 text-xs">
-              <span class="flex items-center gap-1.5">
-                <span class="w-3 h-3 rounded-sm bg-red-500/40 border-2 border-red-500 inline-block"></span>
-                <span class="text-neutral-200 font-medium">Zona Roja (No entregar ≥ 6:30 PM)</span>
-              </span>
-              <span class="flex items-center gap-1.5">
-                <span class="w-3 h-3 rounded-sm bg-emerald-500/40 border-2 border-emerald-500 inline-block"></span>
-                <span class="text-neutral-200 font-medium">Zona Verde (Segura / Acceso Principal)</span>
-              </span>
-              <span class="flex items-center gap-1.5">
-                <span class="w-3 h-3 rounded-sm bg-amber-500/40 border-2 border-amber-500 border-dashed inline-block"></span>
-                <span class="text-neutral-200 font-medium">Precaución / Foco Rojo Noticias</span>
-              </span>
-              <span class="flex items-center gap-1.5">
-                <span class="w-3 h-3 rounded-full bg-sky-400 border-2 border-white inline-block"></span>
-                <span class="text-neutral-200 font-medium">Reportes Conductores / FB</span>
-              </span>
-            </div>
-            <div class="flex items-center gap-1.5">
-              <span class="text-[11px] text-neutral-400 hidden sm:inline">Tip: Haz clic en cualquier punto del mapa para evaluar</span>
-              <button id="resetViewBtn" class="px-3 py-1 rounded-full bg-neutral-900 hover:bg-neutral-800 text-xs text-neutral-200 border border-neutral-700 transition font-semibold">
+<!-- Right Column: Leaflet Map & Rules Summary -->
+<div class="portal-map-column">
+<div class="shipsat-card portal-map-frame">
+<!-- Map Legend Bar -->
+<div class="bg-black/90 border-b border-white/10 px-3.5 py-2.5 flex flex-wrap items-center justify-between gap-2 z-20">
+<div class="flex flex-wrap items-center gap-3 text-xs">
+<span class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded-sm bg-red-500/40 border-2 border-red-500 inline-block"></span>
+<span class="text-neutral-200 font-medium">Zona Roja (No entregar ≥ 6:30 PM)</span>
+</span>
+<span class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded-sm bg-emerald-500/40 border-2 border-emerald-500 inline-block"></span>
+<span class="text-neutral-200 font-medium">Zona Verde (Segura / Acceso Principal)</span>
+</span>
+<span class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded-sm bg-amber-500/40 border-2 border-amber-500 border-dashed inline-block"></span>
+<span class="text-neutral-200 font-medium">Precaución / Foco Rojo Noticias</span>
+</span>
+<span class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded-full bg-sky-400 border-2 border-white inline-block"></span>
+<span class="text-neutral-200 font-medium">Reportes Conductores / FB</span>
+</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="text-[11px] text-neutral-400 hidden sm:inline">Tip: Haz clic en cualquier punto del mapa para evaluar</span>
+<button class="px-3 py-1 rounded-full bg-neutral-900 hover:bg-neutral-800 text-xs text-neutral-200 border border-neutral-700 transition font-semibold" id="resetViewBtn">
                 Ver toda la región
               </button>
-            </div>
-          </div>
-
-          <!-- Leaflet Map Div -->
-          <div id="map" class="w-full flex-1 z-10"></div>
-        </div>
-
-        <!-- Operational Criteria Cards -->
-        <div class="shipsat-card p-3.5 grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-          <div class="shipsat-inner-card p-3 border-l-4 border-l-red-500">
-            <div class="font-bold text-red-400 mb-1 uppercase tracking-wide text-[11px]">Criterio de Corte (6:30 PM)</div>
-            <p class="text-neutral-300 leading-relaxed">
+</div>
+</div>
+<!-- Leaflet Map Div -->
+<div class="w-full flex-1 z-10" id="map"></div>
+</div>
+<!-- Operational Criteria Cards -->
+<div class="shipsat-card p-3.5 grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+<div class="shipsat-inner-card p-3 border-l-4 border-l-red-500">
+<div class="font-bold text-red-400 mb-1 uppercase tracking-wide text-[11px]">Criterio de Corte (6:30 PM)</div>
+<p class="text-neutral-300 leading-relaxed">
               A partir de las <strong>6:30 PM</strong> se suspenden envíos a domicilio dentro de las manchas rojas. Los pedidos de estas zonas solo se entregan en punto medio seguro o antes del anochecer.
             </p>
-          </div>
-          <div class="shipsat-inner-card p-3 border-l-4 border-l-emerald-500">
-            <div class="font-bold text-emerald-400 mb-1 uppercase tracking-wide text-[11px]">Zonas con Excepción (Solapadas)</div>
-            <p class="text-neutral-300 leading-relaxed">
-              <strong>Chiverías:</strong> Solo sobre carretera principal (no internarse en calles).<br/>
-              <strong>Galeana:</strong> Solo Zona Centro (evitar Valle del Sol de noche).<br/>
-              <strong>Tequesquitengo:</strong> Solo Crucero El Proa y Villas Aqua.
+</div>
+<div class="shipsat-inner-card p-3 border-l-4 border-l-emerald-500">
+<div class="font-bold text-emerald-400 mb-1 uppercase tracking-wide text-[11px]">Zonas con Excepción (Solapadas)</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong>Chiverías:</strong> Solo sobre carretera principal (no internarse en calles).<br/>
+<strong>Galeana:</strong> Solo Zona Centro (evitar Valle del Sol de noche).<br/>
+<strong>Tequesquitengo:</strong> Solo Villas Aqua. El Proa ya no es una excepción verde.
             </p>
-          </div>
-          <div class="shipsat-inner-card p-3 border-l-4 border-l-amber-500">
-            <div class="font-bold text-amber-400 mb-1 uppercase tracking-wide text-[11px]">Focos Rojos en Noticias Recientes</div>
-            <p class="text-neutral-300 leading-relaxed">
+</div>
+<div class="shipsat-inner-card p-3 border-l-4 border-l-amber-500">
+<div class="font-bold text-amber-400 mb-1 uppercase tracking-wide text-[11px]">Focos Rojos en Noticias Recientes</div>
+<p class="text-neutral-300 leading-relaxed">
               Reportes de SSPC y prensa local señalan incidentes en <strong>Col. 20 de Noviembre y Emiliano Zapata</strong> (Zacatepec), <strong>Libramiento Casablanca</strong>, y <strong>Santa María / Vicente Guerrero / Alta Vista</strong> (Jojutla).
             </p>
-          </div>
-        </div>
-      </div>
-
-    </section>
-
-    <!-- STEP 3: NEW SECTION - Agregar Noticias de Facebook y Reportes Operativos de Calle -->
-    <section id="sectionReportes" class="shipsat-card p-4 sm:p-5">
-      <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
-        <div>
-          <span class="shipsat-pill-tag">COLABORACIÓN DE CONDUCTORES · FACEBOOK Y VIALIDAD</span>
-          <h2 class="text-2xl sm:text-3xl text-white shipsat-glow-text mt-1">
+</div>
+</div>
+</div>
+</section></div><div class="portal-page" hidden="" id="pagina-reportes"><section class="shipsat-card p-4 sm:p-5" id="sectionReportes">
+<div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+<div>
+<span class="shipsat-pill-tag">COLABORACIÓN DE CONDUCTORES · FACEBOOK Y VIALIDAD</span>
+<h2 class="text-2xl sm:text-3xl text-white shipsat-glow-text mt-1">
             Registrar Noticia o Reporte de Ruta
           </h2>
-          <p class="text-xs text-neutral-400 mt-0.5">
+<p class="text-xs text-neutral-400 mt-0.5">
             Agrega avisos de páginas de Facebook o reportes de ruta (calle empedrada, difícil acceso, accidente, bloqueo). Se marcan en el mapa y alertan a los demás pedidos.
           </p>
-        </div>
-        <span id="customReportsCounter" class="text-xs font-bold px-3 py-1 rounded-full bg-red-950/80 border border-red-500/40 text-red-200">
+</div>
+<span class="text-xs font-bold px-3 py-1 rounded-full bg-red-950/80 border border-red-500/40 text-red-200" id="customReportsCounter">
           3 reportes activos
         </span>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-        <!-- Form to Add News / Street Report -->
-        <form id="customReportForm" class="lg:col-span-5 shipsat-inner-card p-4 space-y-3">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-            <!-- Lugar (Localidad Dropdown) -->
-            <div>
-              <label for="repLugar" class="block text-[11px] font-bold uppercase tracking-wider text-neutral-300 mb-1">
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+<!-- Form to Add News / Street Report -->
+<form class="lg:col-span-5 shipsat-inner-card p-4 space-y-3" id="customReportForm">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+<!-- Lugar (Localidad Dropdown) -->
+<div>
+<label class="block text-[11px] font-bold uppercase tracking-wider text-neutral-300 mb-1" for="repLugar">
                 Lugar (Localidad):
               </label>
-              <select
-                id="repLugar"
-                required
-                class="w-full bg-black/90 border border-neutral-700 focus:border-red-500 rounded-xl px-3 py-2 text-xs text-white outline-none transition"
-              >
-                <option value="Zacatepec">Zacatepec (Centro / General)</option>
-                <option value="Xoxocotla">Xoxocotla</option>
-                <option value="Jojutla">Jojutla (Centro / General)</option>
-                <option value="Tlaltizapán">Tlaltizapán</option>
-                <option value="Santa Rosa 30">Santa Rosa 30 (Tlaltizapán)</option>
-                <option value="Huatecalco">Huatecalco (Tlaltizapán)</option>
-                <option value="El Higuerón">El Higuerón (Jojutla)</option>
-                <option value="Pedro Amaro">Pedro Amaro (Jojutla)</option>
-                <option value="Tequesquitengo">Tequesquitengo (Jojutla)</option>
-                <option value="Hornos Cuates">Hornos Cuates (Jojutla)</option>
-                <option value="Tlatenchi">Tlatenchi (Jojutla)</option>
-                <option value="Tetelpa">Tetelpa (Zacatepec)</option>
-                <option value="Galeana Valle del Sol">Galeana - Valle del Sol</option>
-                <option value="Galeana Centro">Galeana (Zona Centro)</option>
-                <option value="Chiverías">Chiverías (Zacatepec)</option>
-                <option value="Unidad Morelos">Unidad Morelos (Jojutla)</option>
-                <option value="Villas Jojutla">Villas Jojutla</option>
-                <option value="Villas Aqua">Villas Aqua</option>
-                <option value="Teques Proa">Teques Proa</option>
-              </select>
-            </div>
-
-            <!-- Categoría / Nivel de Riesgo -->
-            <div>
-              <label for="repNivel" class="block text-[11px] font-bold uppercase tracking-wider text-neutral-300 mb-1">
+<select class="w-full bg-black/90 border border-neutral-700 focus:border-red-500 rounded-xl px-3 py-2 text-xs text-white outline-none transition" id="repLugar" required="">
+<option value="Zacatepec">Zacatepec (Centro / General)</option>
+<option value="Xoxocotla">Xoxocotla</option>
+<option value="Jojutla">Jojutla (Centro / General)</option>
+<option value="Tlaltizapán">Tlaltizapán</option>
+<option value="Santa Rosa 30">Santa Rosa 30 (Tlaltizapán)</option>
+<option value="Huatecalco">Huatecalco (Tlaltizapán)</option>
+<option value="El Higuerón">El Higuerón (Jojutla)</option>
+<option value="Pedro Amaro">Pedro Amaro (Jojutla)</option>
+<option value="Tequesquitengo">Tequesquitengo (Jojutla)</option>
+<option value="Hornos Cuates">Hornos Cuates (Jojutla)</option>
+<option value="Tlatenchi">Tlatenchi (Jojutla)</option>
+<option value="Tetelpa">Tetelpa (Zacatepec)</option>
+<option value="Galeana Valle del Sol">Galeana - Valle del Sol</option>
+<option value="Galeana Centro">Galeana (Zona Centro)</option>
+<option value="Chiverías">Chiverías (Zacatepec)</option>
+<option value="Unidad Morelos">Unidad Morelos (Jojutla)</option>
+<option value="Villas Jojutla">Villas Jojutla</option>
+<option value="Villas Aqua">Villas Aqua</option>
+<option value="Teques Proa">Teques Proa</option>
+<option value="San José">San José · Puente de Ixtla</option><option value="Tlaquiltenango Centro">Tlaquiltenango Centro · Tlaquiltenango</option><option value="Los Presidentes">Los Presidentes · Tlaquiltenango</option><option value="Chacampalco">Chacampalco · Tlaquiltenango</option><option value="Tlaltizapán Centro">Tlaltizapán Centro · Tlaltizapán</option><option value="Otilio">Otilio · Zacatepec</option><option value="San Miguel 30">San Miguel 30 · Tlaltizapán</option><option value="Benito Juárez">Benito Juárez · Zacatepec</option><option value="20 de Noviembre">20 de Noviembre · Zacatepec</option><option value="Emiliano Zapata">Emiliano Zapata · Zacatepec</option><option value="Tecnológico de Zacatepec y colonias cercanas">Tecnológico de Zacatepec y colonias cercanas · Zacatepec</option></select>
+</div>
+<!-- Categoría / Nivel de Riesgo -->
+<div>
+<label class="block text-[11px] font-bold uppercase tracking-wider text-neutral-300 mb-1" for="repNivel">
                 Tipo de Aviso:
               </label>
-              <select
-                id="repNivel"
-                class="w-full bg-black/90 border border-neutral-700 focus:border-red-500 rounded-xl px-3 py-2 text-xs text-white outline-none transition"
-              >
-                <option value="riesgo">Noticia de Seguridad / Peligro (Rojo)</option>
-                <option value="precaucion">Vialidad / Difícil Acceso / Accidente (Ámbar)</option>
-                <option value="informativo">Aviso Preventivo / Ruta Alterna (Azul)</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Ubicación específica o Link de Facebook / Maps -->
-          <div>
-            <label for="repUbicacion" class="block text-[11px] font-bold uppercase tracking-wider text-neutral-300 mb-1">
+<select class="w-full bg-black/90 border border-neutral-700 focus:border-red-500 rounded-xl px-3 py-2 text-xs text-white outline-none transition" id="repNivel">
+<option value="riesgo">Noticia de Seguridad / Peligro (Rojo)</option>
+<option value="precaucion">Vialidad / Difícil Acceso / Accidente (Ámbar)</option>
+<option value="informativo">Aviso Preventivo / Ruta Alterna (Azul)</option>
+</select>
+</div>
+</div>
+<!-- Ubicación específica o Link de Facebook / Maps -->
+<div>
+<label class="block text-[11px] font-bold uppercase tracking-wider text-neutral-300 mb-1" for="repUbicacion">
               Ubicación de la noticia / Calle o Link (Maps o Facebook):
             </label>
-            <input
-              id="repUbicacion"
-              type="text"
-              placeholder="Ej. Entrada por el panteón, Calle Reforma, o link de Facebook / Maps..."
-              class="w-full bg-black/90 border border-neutral-700 focus:border-red-500 rounded-xl px-3 py-2 text-xs text-white placeholder-neutral-500 outline-none transition"
-            />
-          </div>
-
-          <!-- Quick Tag Chips to auto-fill Reporte -->
-          <div>
-            <span class="block text-[11px] font-bold uppercase tracking-wider text-neutral-400 mb-1.5">
+<input class="w-full bg-black/90 border border-neutral-700 focus:border-red-500 rounded-xl px-3 py-2 text-xs text-white placeholder-neutral-500 outline-none transition" id="repUbicacion" placeholder="Ej. Entrada por el panteón, Calle Reforma, o link de Facebook / Maps..." type="text"/>
+</div>
+<!-- Quick Tag Chips to auto-fill Reporte -->
+<div>
+<span class="block text-[11px] font-bold uppercase tracking-wider text-neutral-400 mb-1.5">
               Etiquetas rápidas para el reporte:
             </span>
-            <div class="flex flex-wrap gap-1.5 text-[11px]">
-              <button type="button" data-chip="Calle empedrada y sin alumbrado público" class="report-chip-btn px-2.5 py-1 rounded-full bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-neutral-200 transition">
+<div class="flex flex-wrap gap-1.5 text-[11px]">
+<button class="report-chip-btn px-2.5 py-1 rounded-full bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-neutral-200 transition" data-chip="Calle empedrada y sin alumbrado público" type="button">
                 + Calle empedrada
               </button>
-              <button type="button" data-chip="Difícil acceso para vehículo / terracería cerrada" class="report-chip-btn px-2.5 py-1 rounded-full bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-neutral-200 transition">
+<button class="report-chip-btn px-2.5 py-1 rounded-full bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-neutral-200 transition" data-chip="Difícil acceso para vehículo / terracería cerrada" type="button">
                 + Difícil acceso
               </button>
-              <button type="button" data-chip="Accidente vial / tráfico detenido en el tramo" class="report-chip-btn px-2.5 py-1 rounded-full bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-neutral-200 transition">
+<button class="report-chip-btn px-2.5 py-1 rounded-full bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-neutral-200 transition" data-chip="Accidente vial / tráfico detenido en el tramo" type="button">
                 + Accidente
               </button>
-              <button type="button" data-chip="Reporte en Facebook de asalto o vehículo sospechoso" class="report-chip-btn px-2.5 py-1 rounded-full bg-red-950/60 hover:bg-red-900/60 border border-red-700/50 text-red-200 transition">
+<button class="report-chip-btn px-2.5 py-1 rounded-full bg-red-950/60 hover:bg-red-900/60 border border-red-700/50 text-red-200 transition" data-chip="Reporte en Facebook de asalto o vehículo sospechoso" type="button">
                 + Noticia Facebook (Seguridad)
               </button>
-              <button type="button" data-chip="Calle cerrada por obra o encharcamiento" class="report-chip-btn px-2.5 py-1 rounded-full bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-neutral-200 transition">
+<button class="report-chip-btn px-2.5 py-1 rounded-full bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-neutral-200 transition" data-chip="Calle cerrada por obra o encharcamiento" type="button">
                 + Calle cerrada
               </button>
-            </div>
-          </div>
-
-          <!-- Reporte Textarea -->
-          <div>
-            <label for="repTexto" class="block text-[11px] font-bold uppercase tracking-wider text-neutral-300 mb-1">
+</div>
+</div>
+<!-- Reporte Textarea -->
+<div>
+<label class="block text-[11px] font-bold uppercase tracking-wider text-neutral-300 mb-1" for="repTexto">
               Reporte:
             </label>
-            <textarea
-              id="repTexto"
-              rows="3"
-              required
-              placeholder="Escribe el reporte (ej. Calle empedrada de difícil acceso, accidente en el crucero, noticia en Facebook sobre robo de moto...)"
-              class="w-full bg-black/90 border border-neutral-700 focus:border-red-500 rounded-xl px-3 py-2 text-xs text-white placeholder-neutral-500 outline-none transition resize-none"
-            ></textarea>
-          </div>
-
-          <button
-            type="submit"
-            class="w-full py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold text-xs shadow-lg shadow-red-900/40 transition"
-          >
+<textarea class="w-full bg-black/90 border border-neutral-700 focus:border-red-500 rounded-xl px-3 py-2 text-xs text-white placeholder-neutral-500 outline-none transition resize-none" id="repTexto" placeholder="Escribe el reporte (ej. Calle empedrada de difícil acceso, accidente en el crucero, noticia en Facebook sobre robo de moto...)" required="" rows="3"></textarea>
+</div>
+<button class="w-full py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold text-xs shadow-lg shadow-red-900/40 transition" type="submit">
             Guardar Noticia / Reporte y Marcar en Mapa
           </button>
-        </form>
-
-        <!-- List of Driver / Facebook Reports -->
-        <div class="lg:col-span-7 flex flex-col gap-2.5">
-          <div class="flex flex-wrap items-center justify-between gap-2 px-1">
-            <span class="text-xs font-bold text-neutral-300">
+</form>
+<!-- List of Driver / Facebook Reports -->
+<div class="lg:col-span-7 flex flex-col gap-2.5">
+<div class="flex flex-wrap items-center justify-between gap-2 px-1">
+<span class="text-xs font-bold text-neutral-300">
               Bitácora de Noticias de Facebook y Reportes Operativos por Localidad:
             </span>
-            <select id="filterReportLocality" class="bg-black/90 border border-neutral-700 rounded-lg px-2.5 py-1 text-xs text-neutral-200 outline-none">
-              <option value="all">Todas las localidades</option>
-              <option value="Zacatepec">Zacatepec</option>
-              <option value="Xoxocotla">Xoxocotla</option>
-              <option value="Jojutla">Jojutla</option>
-              <option value="Tlaltizapán">Tlaltizapán</option>
-              <option value="Santa Rosa 30">Santa Rosa 30</option>
-              <option value="Huatecalco">Huatecalco</option>
-              <option value="El Higuerón">El Higuerón</option>
-              <option value="Pedro Amaro">Pedro Amaro</option>
-              <option value="Tequesquitengo">Tequesquitengo</option>
-              <option value="Hornos Cuates">Hornos Cuates</option>
-              <option value="Tlatenchi">Tlatenchi</option>
-              <option value="Tetelpa">Tetelpa</option>
-              <option value="Galeana Valle del Sol">Galeana Valle del Sol</option>
-              <option value="Chiverías">Chiverías</option>
-            </select>
-          </div>
-
-          <div id="customReportsList" class="space-y-2.5 max-h-[380px] overflow-y-auto pr-1">
-            <!-- Populated dynamically -->
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- STEP 4: Comunicados / Live Security News Scanner & Facebook/Media Quick Links -->
-    <section id="sectionComunicados" class="shipsat-card p-4 sm:p-5">
-      <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-        <div>
-          <span class="shipsat-pill-tag">AVISOS Y MONITOREO EN VIVO</span>
-          <h2 class="text-2xl sm:text-3xl text-white shipsat-glow-text mt-1">
+<select class="bg-black/90 border border-neutral-700 rounded-lg px-2.5 py-1 text-xs text-neutral-200 outline-none" id="filterReportLocality">
+<option value="all">Todas las localidades</option>
+<option value="Zacatepec">Zacatepec</option>
+<option value="Xoxocotla">Xoxocotla</option>
+<option value="Jojutla">Jojutla</option>
+<option value="Tlaltizapán">Tlaltizapán</option>
+<option value="Santa Rosa 30">Santa Rosa 30</option>
+<option value="Huatecalco">Huatecalco</option>
+<option value="El Higuerón">El Higuerón</option>
+<option value="Pedro Amaro">Pedro Amaro</option>
+<option value="Tequesquitengo">Tequesquitengo</option>
+<option value="Hornos Cuates">Hornos Cuates</option>
+<option value="Tlatenchi">Tlatenchi</option>
+<option value="Tetelpa">Tetelpa</option>
+<option value="Galeana Valle del Sol">Galeana Valle del Sol</option>
+<option value="Chiverías">Chiverías</option>
+<option value="San José">San José · Puente de Ixtla</option><option value="Tlaquiltenango Centro">Tlaquiltenango Centro · Tlaquiltenango</option><option value="Los Presidentes">Los Presidentes · Tlaquiltenango</option><option value="Chacampalco">Chacampalco · Tlaquiltenango</option><option value="Tlaltizapán Centro">Tlaltizapán Centro · Tlaltizapán</option><option value="Otilio">Otilio · Zacatepec</option><option value="San Miguel 30">San Miguel 30 · Tlaltizapán</option><option value="Benito Juárez">Benito Juárez · Zacatepec</option><option value="20 de Noviembre">20 de Noviembre · Zacatepec</option><option value="Emiliano Zapata">Emiliano Zapata · Zacatepec</option><option value="Tecnológico de Zacatepec y colonias cercanas">Tecnológico de Zacatepec y colonias cercanas · Zacatepec</option></select>
+</div>
+<div class="space-y-2.5 max-h-[380px] overflow-y-auto pr-1" id="customReportsList">
+<!-- Populated dynamically -->
+</div>
+</div>
+</div>
+</section></div><div class="portal-page" hidden="" id="pagina-noticias"><section class="shipsat-card p-4 sm:p-5" id="sectionComunicados">
+<div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+<div>
+<span class="shipsat-pill-tag">AVISOS Y MONITOREO EN VIVO</span>
+<h2 class="text-2xl sm:text-3xl text-white shipsat-glow-text mt-1">
             Comunicados de Seguridad
           </h2>
-          <p class="text-xs text-neutral-400 mt-0.5">
+<p class="text-xs text-neutral-400 mt-0.5">
             Se actualiza automáticamente al abrir la página buscando reportes recientes de seguridad en Jojutla, Zacatepec, Tlaltizapán y Xoxocotla.
           </p>
-        </div>
-
-        <div class="flex flex-wrap items-center gap-2">
-          <span id="newsStatusBadge" class="text-[11px] px-3 py-1 rounded-full bg-neutral-900 border border-neutral-700 text-neutral-300">
+</div>
+<div class="flex flex-wrap items-center gap-2">
+<span class="text-[11px] px-3 py-1 rounded-full bg-neutral-900 border border-neutral-700 text-neutral-300" id="newsStatusBadge">
             Última revisión: recién actualizado
           </span>
-          <button
-            id="refreshNewsBtn"
-            class="px-4 py-2 rounded-full bg-neutral-900 hover:bg-neutral-800 border border-red-500/40 text-xs font-bold text-white transition flex items-center gap-1.5"
-          >
-            <span id="refreshSpinner" class="inline-block">↻</span>
-            <span>Buscar noticias ahora</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Direct Facebook & Local Security Portals Bar -->
-      <div class="shipsat-inner-card p-3 mb-4 flex flex-wrap items-center justify-between gap-2">
-        <span class="text-xs font-semibold text-neutral-300">
+<button class="px-4 py-2 rounded-full bg-neutral-900 hover:bg-neutral-800 border border-red-500/40 text-xs font-bold text-white transition flex items-center gap-1.5" id="refreshNewsBtn">
+<span class="inline-block" id="refreshSpinner">↻</span>
+<span>Buscar noticias ahora</span>
+</button>
+</div>
+</div>
+<!-- Direct Facebook & Local Security Portals Bar -->
+<div class="shipsat-inner-card p-3 mb-4 flex flex-wrap items-center justify-between gap-2">
+<span class="text-xs font-semibold text-neutral-300">
           Abrir monitoreo externo en tiempo real (Facebook / Prensa Seguridad Sur de Morelos):
         </span>
-        <div class="flex flex-wrap items-center gap-2 text-xs">
-          <a
-            href="https://www.facebook.com/search/posts/?q=inseguridad%20jojutla%20zacatepec%20xoxocotla"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="px-3 py-1.5 rounded-full bg-[#1877F2]/20 hover:bg-[#1877F2]/30 border border-[#1877F2]/50 text-blue-300 font-semibold transition"
-          >
+<div class="flex flex-wrap items-center gap-2 text-xs">
+<a class="px-3 py-1.5 rounded-full bg-[#1877F2]/20 hover:bg-[#1877F2]/30 border border-[#1877F2]/50 text-blue-300 font-semibold transition" href="https://www.facebook.com/search/posts/?q=inseguridad%20jojutla%20zacatepec%20xoxocotla" rel="noopener noreferrer" target="_blank">
             Facebook: Alertas Jojutla / Zacatepec ↗
           </a>
-          <a
-            href="https://oem.com.mx/elsoldecuernavaca/seguridad/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="px-3 py-1.5 rounded-full bg-red-950/60 hover:bg-red-900/60 border border-red-700/50 text-red-200 font-semibold transition"
-          >
+<a class="px-3 py-1.5 rounded-full bg-red-950/60 hover:bg-red-900/60 border border-red-700/50 text-red-200 font-semibold transition" href="https://oem.com.mx/elsoldecuernavaca/seguridad/" rel="noopener noreferrer" target="_blank">
             El Sol de Cuernavaca (Seguridad) ↗
           </a>
-          <a
-            href="https://www.lajornadamorelos.mx/seguridad/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="px-3 py-1.5 rounded-full bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-neutral-200 font-semibold transition"
-          >
+<a class="px-3 py-1.5 rounded-full bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-neutral-200 font-semibold transition" href="https://www.lajornadamorelos.mx/seguridad/" rel="noopener noreferrer" target="_blank">
             La Jornada Morelos ↗
           </a>
-        </div>
-      </div>
+</div>
+</div>
+<!-- News Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="newsFeedContainer">
+<!-- Populated automatically on load and via live RSS fetch -->
+</div>
+</section><div class="portal-directory">
+<div class="shipsat-card p-3.5 flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<div>
+<span class="shipsat-pill-tag">DIRECTORIO DE COLONIAS</span>
+<h2 class="text-base text-white shipsat-title mt-1">Buscador de Zonas</h2>
+</div>
+<span class="text-[11px] text-neutral-400 font-semibold" id="zoneCounter">25 zonas activas</span>
+</div>
+<div class="relative">
+<input class="w-full bg-black/80 border border-neutral-800 focus:border-red-500 rounded-xl px-3 py-2 text-xs text-white placeholder-neutral-500 outline-none transition" id="searchInput" placeholder="Filtrar colonia, pueblo o fraccionamiento..." type="text"/>
+<button class="hidden absolute right-2.5 top-2 text-xs text-neutral-400 hover:text-white" id="clearSearchBtn">✕</button>
+</div>
+<!-- Filter Tabs -->
+<div class="grid grid-cols-4 gap-1.5 bg-black/80 p-1 rounded-xl border border-neutral-800 text-[11px] font-semibold">
+<button class="filter-tab py-1.5 rounded-lg bg-red-600 text-white transition" data-filter="all">Todas</button>
+<button class="filter-tab py-1.5 rounded-lg text-red-400 hover:bg-neutral-900 transition" data-filter="red">Rojas (11)</button>
+<button class="filter-tab py-1.5 rounded-lg text-emerald-400 hover:bg-neutral-900 transition" data-filter="green">Verdes (9)</button>
+<button class="filter-tab py-1.5 rounded-lg text-amber-400 hover:bg-neutral-900 transition" data-filter="news">Noticias (5)</button>
+</div>
+<!-- Layer Checkboxes -->
 
-      <!-- News Cards Grid -->
-      <div id="newsFeedContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <!-- Populated automatically on load and via live RSS fetch -->
-      </div>
-    </section>
+</div>
+<!-- Scrollable Zone List -->
+<div class="shipsat-card p-2.5 flex-1 overflow-y-auto max-h-[470px] space-y-2" id="zoneList">
+<!-- Rendered dynamically -->
+</div>
+</div></div></main>
+<!-- Floating Bottom Navigation Bar (Matching ShipSat Driver App UI) -->
+<nav aria-label="Navegación principal" class="fixed bottom-3 left-1/2 -translate-x-1/2 z-40 w-[95%] max-w-xl shipsat-bottom-nav p-1.5 flex items-center justify-between text-[11px] font-semibold text-neutral-400">
 
-  </main>
-
-  <!-- Floating Bottom Navigation Bar (Matching ShipSat Driver App UI) -->
-  <nav class="fixed bottom-3 left-1/2 -translate-x-1/2 z-40 w-[95%] max-w-xl shipsat-bottom-nav p-1.5 flex items-center justify-between text-[11px] font-semibold text-neutral-400">
-    <button data-nav="sectionValidador" class="bottom-nav-btn nav-btn-active flex-1 py-2 px-2 rounded-full flex flex-col items-center justify-center gap-0.5 transition">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-      <span>Inicio / Evaluar</span>
-    </button>
-    <button data-nav="sectionMapa" class="bottom-nav-btn flex-1 py-2 px-2 rounded-full flex flex-col items-center justify-center gap-0.5 hover:text-white transition">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
-      <span>Mapa Zonas</span>
-    </button>
-    <button data-nav="sectionReportes" class="bottom-nav-btn flex-1 py-2 px-2 rounded-full flex flex-col items-center justify-center gap-0.5 hover:text-white transition">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-      <span>Reportes</span>
-    </button>
-    <button data-nav="sectionComunicados" class="bottom-nav-btn flex-1 py-2 px-2 rounded-full flex flex-col items-center justify-center gap-0.5 hover:text-white transition">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
-      <span>Comunicados</span>
-    </button>
-  </nav>
-
-  <script>
+<button aria-controls="pagina-mapa" class="bottom-nav-btn flex-1 py-2 px-2 rounded-full flex flex-col items-center justify-center gap-0.5 hover:text-white transition" data-nav="sectionMapa" data-page="mapa">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span>MAPA</span>
+</button>
+<button aria-controls="pagina-reportes" class="bottom-nav-btn flex-1 py-2 px-2 rounded-full flex flex-col items-center justify-center gap-0.5 hover:text-white transition" data-nav="sectionReportes" data-page="reportes">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span>Reportes</span>
+</button>
+<button aria-controls="pagina-noticias" class="bottom-nav-btn flex-1 py-2 px-2 rounded-full flex flex-col items-center justify-center gap-0.5 hover:text-white transition" data-nav="sectionComunicados" data-page="noticias">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span>Noticias</span>
+</button>
+</nav>
+<script>
     const ZONES = [
+{"id": "operational-red-update-1", "name": "San José", "localityKey": "San José", "municipality": "Puente de Ixtla", "keywords": ["san jose"], "category": "red", "shape": "unlocated", "coords": [], "center": null, "userOperational": true, "rule": "ZONA ROJA OPERATIVA · NO ENTREGAR ≥ 6:30 PM", "notes": "Clasificación operativa indicada por el usuario. Límite pendiente de definir; usa Agregar zona roja para delimitar un recuadro."},
+{"id": "operational-red-update-2", "name": "Tlaquiltenango Centro", "localityKey": "Tlaquiltenango Centro", "municipality": "Tlaquiltenango", "keywords": ["tlaquiltenango centro", "centro de tlaquiltenango", "tlaquiltenango (centro)"], "category": "red", "shape": "unlocated", "coords": [], "center": null, "userOperational": true, "rule": "ZONA ROJA OPERATIVA · NO ENTREGAR ≥ 6:30 PM", "notes": "Clasificación operativa indicada por el usuario. Límite pendiente de definir; usa Agregar zona roja para delimitar un recuadro."},
+{"id": "operational-red-update-3", "name": "Los Presidentes", "localityKey": "Los Presidentes", "municipality": "Tlaquiltenango", "keywords": ["los presidentes"], "category": "red", "shape": "unlocated", "coords": [], "center": null, "userOperational": true, "rule": "ZONA ROJA OPERATIVA · NO ENTREGAR ≥ 6:30 PM", "notes": "Clasificación operativa indicada por el usuario. Límite pendiente de definir; usa Agregar zona roja para delimitar un recuadro."},
+{"id": "operational-red-update-4", "name": "Chacampalco", "localityKey": "Chacampalco", "municipality": "Tlaquiltenango", "keywords": ["chacampalco"], "category": "red", "shape": "unlocated", "coords": [], "center": null, "userOperational": true, "rule": "ZONA ROJA OPERATIVA · NO ENTREGAR ≥ 6:30 PM", "notes": "Clasificación operativa indicada por el usuario. Límite pendiente de definir; usa Agregar zona roja para delimitar un recuadro."},
+{"id": "operational-red-update-5", "name": "Tlaltizapán Centro", "localityKey": "Tlaltizapán Centro", "municipality": "Tlaltizapán", "keywords": ["tlaltizapan centro", "centro de tlaltizapan", "tlaltizapan (centro)"], "category": "red", "shape": "unlocated", "coords": [], "center": null, "userOperational": true, "rule": "ZONA ROJA OPERATIVA · NO ENTREGAR ≥ 6:30 PM", "notes": "Clasificación operativa indicada por el usuario. Límite pendiente de definir; usa Agregar zona roja para delimitar un recuadro."},
+{"id": "operational-red-update-6", "name": "Otilio", "localityKey": "Otilio", "municipality": "Zacatepec", "keywords": ["otilio"], "category": "red", "shape": "unlocated", "coords": [], "center": null, "userOperational": true, "rule": "ZONA ROJA OPERATIVA · NO ENTREGAR ≥ 6:30 PM", "notes": "Clasificación operativa indicada por el usuario. Límite pendiente de definir; usa Agregar zona roja para delimitar un recuadro."},
+{"id": "operational-red-update-7", "name": "San Miguel 30", "localityKey": "San Miguel 30", "municipality": "Tlaltizapán", "keywords": ["san miguel 30", "san miguel treinta"], "category": "red", "shape": "unlocated", "coords": [], "center": null, "userOperational": true, "rule": "ZONA ROJA OPERATIVA · NO ENTREGAR ≥ 6:30 PM", "notes": "Clasificación operativa indicada por el usuario. Límite pendiente de definir; usa Agregar zona roja para delimitar un recuadro."},
+{"id": "operational-red-update-8", "name": "Benito Juárez", "localityKey": "Benito Juárez", "municipality": "Zacatepec", "keywords": ["benito juarez"], "category": "red", "shape": "unlocated", "coords": [], "center": null, "userOperational": true, "rule": "ZONA ROJA OPERATIVA · NO ENTREGAR ≥ 6:30 PM", "notes": "Clasificación operativa indicada por el usuario. Límite pendiente de definir; usa Agregar zona roja para delimitar un recuadro."},
+{"id": "operational-red-update-9", "name": "20 de Noviembre", "localityKey": "20 de Noviembre", "municipality": "Zacatepec", "keywords": ["20 de noviembre"], "category": "red", "shape": "unlocated", "coords": [], "center": null, "userOperational": true, "rule": "ZONA ROJA OPERATIVA · NO ENTREGAR ≥ 6:30 PM", "notes": "Clasificación operativa indicada por el usuario. Límite pendiente de definir; usa Agregar zona roja para delimitar un recuadro."},
+{"id": "operational-red-update-10", "name": "Emiliano Zapata", "localityKey": "Emiliano Zapata", "municipality": "Zacatepec", "keywords": ["emiliano zapata zacatepec", "emiliano zapata (zacatepec)"], "category": "red", "shape": "unlocated", "coords": [], "center": null, "userOperational": true, "rule": "ZONA ROJA OPERATIVA · NO ENTREGAR ≥ 6:30 PM", "notes": "Clasificación operativa indicada por el usuario. Límite pendiente de definir; usa Agregar zona roja para delimitar un recuadro."},
+{"id": "operational-red-update-11", "name": "Tecnológico de Zacatepec y colonias cercanas", "localityKey": "Tecnológico de Zacatepec y colonias cercanas", "municipality": "Zacatepec", "keywords": ["tecnologico de zacatepec", "instituto tecnologico de zacatepec", "tecnologico zacatepec"], "category": "red", "shape": "unlocated", "coords": [], "center": null, "userOperational": true, "rule": "ZONA ROJA OPERATIVA · NO ENTREGAR ≥ 6:30 PM", "notes": "Clasificación operativa indicada por el usuario. Límite pendiente de definir; usa Agregar zona roja para delimitar un recuadro. Falta precisar las colonias cercanas."},
+
       // RED ZONES (User List)
       {
         id: 'red-xoxocotla',
@@ -775,7 +688,7 @@
         ],
         center: [18.6191, -99.2562],
         rule: 'DE RIESGO · NO ENTREGAR ≥ 6:30 PM (EXCEPTO EL PROA)',
-        notes: 'Tu lista de zona roja. Evitar internarse al circuito del lago o calles oscuras después de las 6:30 PM; solo entregar en el crucero de Teques Proa.'
+        notes: 'Tu lista de zona roja. Evitar internarse al circuito del lago o calles oscuras después de las 6:30 PM; El Proa ya no es una excepción verde; coordinar el punto de entrega.'
       },
       {
         id: 'red-tlatenchi',
@@ -979,12 +892,12 @@
         notes: 'Tu lista de zona verde sobre la carretera Jojutla–Tequesquitengo.'
       },
       {
-        id: 'green-teques-proa',
+        id: 'caution-teques-proa',
         name: 'Teques Proa (Crucero El Proa)',
         localityKey: 'Teques Proa',
         keywords: ['teques proa', 'el proa', 'crucero proa', 'glorieta de las alas'],
         municipality: 'Jojutla (Tequesquitengo)',
-        category: 'green',
+        category: 'news',
         isCautionCorridor: true,
         shape: 'polygon',
         coords: [
@@ -994,8 +907,8 @@
           [18.6060, -99.2525]
         ],
         center: [18.6092, -99.2488],
-        rule: 'NO RIESGOSO / PUNTO DE ENTREGA EN CRUCERO EL PROA',
-        notes: 'Tu lista de zona verde (Crucero El Proa / Glorieta de las Alas, entrada principal sin bajar al circuito oscuro del lago).'
+        rule: 'SIN EXCEPCIÓN VERDE · REVISAR ENTREGA',
+        notes: 'El Proa fue retirado de las excepciones verdes por solicitud del usuario; no se reclasifica automáticamente como rojo.'
       },
 
       // NEWS HOTSPOTS (Suggested from local press)
@@ -1005,7 +918,7 @@
         localityKey: 'Zacatepec',
         keywords: ['20 de noviembre', 'emiliano zapata zacatepec'],
         municipality: 'Zacatepec',
-        category: 'news',
+        category: 'red',
         shape: 'polygon',
         coords: [
           [18.6650, -99.1910],
@@ -1014,7 +927,7 @@
           [18.6598, -99.1910]
         ],
         center: [18.6624, -99.1860],
-        rule: 'PRECAUCIÓN · ALERTA POR NOTICIAS RECIENTES',
+        rule: 'ZONA ROJA OPERATIVA · NO ENTREGAR ≥ 6:30 PM',
         notes: 'Señaladas por la SSPC Morelos en El Sol de Cuernavaca (enero 2026) como focos rojos por hechos violentos en los límites entre Zacatepec y Tlaltizapán.'
       },
       {
@@ -1258,7 +1171,7 @@
       }).addTo(map);
 
       map.on('click', e => {
-        if (window.redDrawing) { window.redCorner(e.latlng); return; }
+        if(window.portalDrawing){window.portalCorner(e.latlng);return;}
         const { lat, lng } = e.latlng;
         document.getElementById('mapsLinkInput').value = `https://www.google.com/maps?q=${lat.toFixed(5)},${lng.toFixed(5)}`;
         document.getElementById('clearMapsBtn').classList.remove('hidden');
@@ -1426,6 +1339,9 @@
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '');
 
+      const manualMatch = coords ? ZONES.find(z=>z.manual&&pointInPolygon(coords,z.coords)) : null;
+      const namedMatch = ZONES.find(z=>z.userOperational&&z.keywords.some(k=>normalized.includes(k)));
+      if(manualMatch||namedMatch){const z=manualMatch||namedMatch;renderVerdictCard('riesgo',z,coords||z.center,flyToPoint);return;}
       let matchedZone = null;
       let verdictLevel = 'precaucion';
       let evalPoint = coords;
@@ -1649,6 +1565,7 @@
       const showLabels = document.getElementById('chkLabels').checked;
 
       ZONES.forEach(zone => {
+        if(zone.shape === 'unlocated') return;
         if (zone.category === 'red' && !showRed) return;
         if (zone.category === 'green' && !showGreen) return;
         if (zone.category === 'news' && !showNews) return;
@@ -1919,6 +1836,7 @@
       window.portalPage('mapa');
       const zone = ZONES.find(z => z.id === id);
       if (!zone) return;
+      if(zone.shape==='unlocated'){renderVerdictCard('riesgo',zone,null,false);return;}
 
       if (zone.category === 'red' && !document.getElementById('chkRed').checked) {
         document.getElementById('chkRed').checked = true;
@@ -2032,7 +1950,7 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      if (window.L) { try { initMap(); } catch (err) { console.error(err); } }
+      try{if(window.L)initMap();}catch(error){console.error(error);}
 
       const mapsInput = document.getElementById('mapsLinkInput');
       const clearMapsBtn = document.getElementById('clearMapsBtn');
@@ -2062,7 +1980,7 @@
       document.getElementById('shortLinkQuickLocality').addEventListener('change', e => {
         const chosenLocality = e.target.value;
         if (!chosenLocality) return;
-        const coords = LOCALITY_COORDS[chosenLocality] || [18.6380, -99.2050];
+        const coords = LOCALITY_COORDS[chosenLocality] || null;
         if (currentShortCode) {
           saveShortLinkMapping(currentShortCode, {
             locality: chosenLocality,
@@ -2120,9 +2038,9 @@
 
         // Determine coordinates from Ubicacion (if it has coords) or from Lugar center with slight offset so markers don't stack
         const extracted = extractCoordsFromText(ubicacion);
-        const baseCoords = extracted || LOCALITY_COORDS[lugar] || [18.6380, -99.2050];
+        const baseCoords = extracted || LOCALITY_COORDS[lugar] || null;
         const jitter = extracted ? [0, 0] : [(Math.random() - 0.5) * 0.003, (Math.random() - 0.5) * 0.003];
-        const finalCoords = [baseCoords[0] + jitter[0], baseCoords[1] + jitter[1]];
+        const finalCoords = baseCoords ? [baseCoords[0] + jitter[0], baseCoords[1] + jitter[1]] : null;
 
         const nowStr = new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
         const newRep = {
@@ -2142,7 +2060,7 @@
         document.getElementById('repUbicacion').value = '';
         document.getElementById('repTexto').value = '';
 
-        map.flyTo(finalCoords, 14, { duration: 0.7 });
+        if(map && finalCoords)map.flyTo(finalCoords, 14, { duration: 0.7 });
       });
 
       document.getElementById('filterReportLocality').addEventListener('change', () => {
@@ -2205,55 +2123,34 @@
         map.flyTo([18.6380, -99.2050], 12, { duration: 0.7 });
       });
 
-      // Bottom Navigation Bar
-      document.querySelectorAll('.bottom-nav-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('.bottom-nav-btn').forEach(b => b.classList.remove('nav-btn-active'));
-          btn.classList.add('nav-btn-active');
-          const targetId = btn.getAttribute('data-nav');
-          const targetEl = document.getElementById(targetId);
-          if (targetEl) {
-            targetEl.scrollIntoView({ behavior: 'smooth' });
-          }
-        });
-      });
+
     });
-  </script>
-<script>
+</script>
+<dialog id="profileEditor"><form id="profileForm"><h2>Personalizar portal</h2><label>Título<input id="editTitle" maxlength="70" required=""/></label><label>Correo<input id="editEmail" maxlength="120" required="" type="email"/></label><p>Se guarda en este navegador.</p><div class="red-actions"><button class="portal-btn" id="profileCancel" type="button">Cancelar</button><button class="portal-btn primary" type="submit">Guardar cambios</button></div></form></dialog><div aria-live="polite" hidden="" id="portalToast" role="status"></div><script>
 (function(){
-const $=id=>document.getElementById(id),main=document.querySelector('main'),header=document.querySelector('header');
-const pages={};for(const name of ['mapa','reportes','noticias']){const page=document.createElement('div');page.id='pagina-'+name;page.className='portal-page';pages[name]=page;main.append(page);}
-const validator=$('sectionValidador'),section=$('sectionMapa');
-// The directory's parent is identified structurally, without CSS-escaped Tailwind selectors.
-const directoryColumn=$('zoneList').parentElement;
-pages.mapa.append(validator,section);pages.reportes.append($('sectionReportes'));pages.noticias.append($('sectionComunicados'),directoryColumn);directoryColumn.className='portal-news-directory';
-section.className='portal-map-section';section.firstElementChild.className='portal-map-column';$('map').parentElement.className='shipsat-card portal-map-frame';
-const tools=$('clockBadge').parentElement;tools.className='portal-tools';pages.mapa.insertBefore(tools,section);const layers=$('chkRed').parentElement.parentElement;tools.append(layers);
-const title=header.querySelector('h1'),email=Array.from(header.querySelectorAll('span')).find(e=>e.textContent.includes('@'));
-const greeting=email.parentElement;const emailNode=email;greeting.replaceChildren(emailNode);
-const edit=document.createElement('button');edit.type='button';edit.className='portal-btn';edit.textContent='✎ Editar';header.firstElementChild.append(edit);
-const dialog=document.createElement('dialog');dialog.id='profileEditor';dialog.innerHTML='<form id="profileEditForm"><h2>Editar portal</h2><label>Título<input id="editTitle" required maxlength="70"></label><label>Correo<input id="editEmail" type="email" required></label><button class="portal-btn portal-primary">Guardar</button> <button class="portal-btn" type="button" id="profileCancel">Cancelar</button></form>';document.body.append(dialog);
-const read=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key))||fallback;}catch(e){return fallback;}};
-const save=(key,data)=>{try{localStorage.setItem(key,JSON.stringify(data));return true;}catch(e){alert('El navegador no permitió guardar los cambios.');return false;}};
-const profile=read('shipsat_portal_profile_v2',null);if(profile){title.textContent=profile.title;email.textContent=profile.email;}
-edit.onclick=()=>{$('editTitle').value=title.textContent.trim();$('editEmail').value=email.textContent.trim();dialog.showModal();};$('profileCancel').onclick=()=>dialog.close();$('profileEditForm').onsubmit=e=>{e.preventDefault();const p={title:$('editTitle').value.trim(),email:$('editEmail').value.trim()};if(!p.title||!save('shipsat_portal_profile_v2',p))return;title.textContent=p.title;email.textContent=p.email;dialog.close();};
-const nav=document.querySelector('nav');nav.setAttribute('aria-label','Navegación principal');const old=Array.from(nav.querySelectorAll('button'));old[0].remove();const names=['mapa','reportes','noticias'];Array.from(nav.querySelectorAll('button')).forEach((b,i)=>{b.dataset.page=names[i];b.querySelector('span').textContent=i===0?'MAPA':i===1?'Reportes':'Noticias';});
-window.portalPage=function(name){if(!pages[name])name='mapa';Object.entries(pages).forEach(([key,p])=>p.hidden=key!==name);nav.querySelectorAll('button').forEach(b=>{b.classList.toggle('nav-btn-active',b.dataset.page===name);b.setAttribute('aria-current',b.dataset.page===name?'page':'false');});if(name==='mapa'&&typeof map!=='undefined'&&map){requestAnimationFrame(()=>map.invalidateSize({pan:false}));setTimeout(()=>map.invalidateSize({pan:false}),150);}window.scrollTo(0,0);};
-// Capture prevents the original scrolling navigation from competing with page switching.
-nav.addEventListener('click',e=>{const b=e.target.closest('button[data-page]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();window.portalPage(b.dataset.page);},true);
-const message=document.createElement('div');message.id='mapLoadMessage';message.setAttribute('role','status');message.textContent='Cargando mapa…';pages.mapa.insertBefore(message,section);
-const red=document.createElement('details');red.className='shipsat-card red-editor';red.innerHTML='<summary>＋ Agregar zona roja</summary><form id="redForm"><label>Nombre <input id="redName" required maxlength="90" placeholder="Colonia o zona"></label><label>Localidad <input id="redTown" required maxlength="90" placeholder="Municipio"></label><div class="red-actions"><button type="button" id="redStart" class="portal-btn">Dibujar recuadro</button><button type="button" id="redCancel" class="portal-btn">Cancelar</button><button class="portal-btn portal-primary">Guardar zona</button></div><p id="redStatus">Marca dos esquinas opuestas en el mapa. Zonas manuales, no alertas oficiales.</p></form><div id="manualRows"></div>';pages.mapa.insertBefore(red,section);
-let corner=null,preview=null,bounds=null;window.redDrawing=false;
-function cancel(){window.redDrawing=false;corner=null;bounds=null;document.body.classList.remove('red-mode');if(preview&&map)map.removeLayer(preview);preview=null;$('redStatus').textContent='Marca dos esquinas opuestas en el mapa.';}
-window.redCorner=p=>{if(!corner){corner=p;$('redStatus').textContent='Ahora toca la esquina opuesta.';return;}const b=L.latLngBounds(corner,p);if(b.getNorth()-b.getSouth()<0.00001||b.getEast()-b.getWest()<0.00001)return;bounds=b;preview=L.rectangle(b,{color:'#ef4444',fillOpacity:.3,interactive:false}).addTo(map);window.redDrawing=false;document.body.classList.remove('red-mode');$('redStatus').textContent='Recuadro listo. Completa los campos y guarda la zona.';};
-$('redStart').onclick=()=>{if(!map){alert('Espera a que cargue el mapa.');return;}cancel();window.redDrawing=true;document.body.classList.add('red-mode');$('redStatus').textContent='Toca la primera esquina del recuadro.';};$('redCancel').onclick=cancel;
-function rows(){const container=$('manualRows');container.replaceChildren();ZONES.filter(z=>z.manual).forEach(z=>{const row=document.createElement('div'),label=document.createElement('span'),del=document.createElement('button');label.textContent=z.rawName||z.name;del.textContent='Eliminar';del.className='portal-btn';del.onclick=()=>{if(!confirm('¿Eliminar esta zona manual?'))return;if(!save('shipsat_manual_red_zones_v2',ZONES.filter(x=>x.manual&&x.id!==z.id)))return;ZONES.splice(ZONES.indexOf(z),1);renderMapZones();renderSidebarList();rows();};row.append(label,del);container.append(row);});document.querySelectorAll('.filter-tab').forEach(b=>{const k=b.dataset.filter;if(k!=='all')b.textContent=({red:'Rojas',green:'Verdes',news:'Noticias'}[k])+' ('+ZONES.filter(z=>z.category===k).length+')';});}
-const escape=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const stored=read('shipsat_manual_red_zones_v2',[]);if(Array.isArray(stored))stored.forEach(z=>{if(z&&z.manual&&Array.isArray(z.coords)&&z.coords.length===4&&z.coords.every(p=>Array.isArray(p)&&p.length===2&&p.every(Number.isFinite))&&!ZONES.some(x=>x.id===z.id))ZONES.push(z);});
-$('redForm').onsubmit=e=>{e.preventDefault();if(!bounds){alert('Dibuja primero el recuadro.');return;}const name=$('redName').value.trim(),town=$('redTown').value.trim();if(!name||!town)return;const c=bounds.getCenter(),z={id:'manual-'+Date.now(),manual:true,rawName:name,name:escape(name),localityKey:escape(town),municipality:escape(town),keywords:[name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')],category:'red',shape:'polygon',center:[c.lat,c.lng],coords:[[bounds.getSouth(),bounds.getWest()],[bounds.getSouth(),bounds.getEast()],[bounds.getNorth(),bounds.getEast()],[bounds.getNorth(),bounds.getWest()]],rule:'ZONA ROJA MANUAL · NO ENTREGAR ≥ 6:30 PM',notes:'Zona manual del conductor, sin verificación oficial.'};if(!save('shipsat_manual_red_zones_v2',[...ZONES.filter(x=>x.manual),z]))return;ZONES.push(z);cancel();$('chkRed').checked=true;renderMapZones();renderSidebarList();rows();$('redForm').reset();$('redStatus').textContent='Zona guardada en este navegador.';};
-window.portalPage('mapa');rows();
-function mapReady(){if(map){message.hidden=true;map.invalidateSize({pan:false});rows();return;}message.hidden=false;message.textContent='No se pudo cargar el mapa. Revisa tu conexión y abre el HTML en un navegador completo, no en la vista previa del archivo.';}
-window.addEventListener('DOMContentLoaded',()=>{if(window.L){mapReady();return;}message.textContent='Reintentando cargar el mapa…';const link=document.createElement('link');link.rel='stylesheet';link.href='https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css';document.head.append(link);const script=document.createElement('script');script.src='https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js';script.onload=()=>{try{if(!map)initMap();}catch(e){console.error(e);}mapReady();};script.onerror=mapReady;document.head.append(script);setTimeout(mapReady,12000);});
+const $=id=>document.getElementById(id),key='shipsat_manual_red_zones_v2';
+let corner=null,preview=null,bounds=null,timer=null;
+window.portalDrawing=false;
+function toast(t){$('portalToast').textContent=t;$('portalToast').hidden=false;clearTimeout(timer);timer=setTimeout(()=>$('portalToast').hidden=true,4500);}
+function read(k,d){try{return JSON.parse(localStorage.getItem(k))||d;}catch(e){return d;}}
+function save(k,d){try{localStorage.setItem(k,JSON.stringify(d));return true;}catch(e){toast('El navegador no permitió guardar los cambios.');return false;}}
+function safe(t){return String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function norm(t){return String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
+function counts(){document.querySelectorAll('.filter-tab').forEach(b=>{const f=b.dataset.filter;b.textContent=({all:'Todas',red:'Rojas',green:'Verdes',news:'Noticias'}[f])+' ('+(f==='all'?ZONES.length:ZONES.filter(z=>z.category===f).length)+')';});}
+function cancel(){window.portalDrawing=false;corner=null;bounds=null;if(preview&&map)map.removeLayer(preview);preview=null;document.body.classList.remove('red-mode');$('redStatus').textContent='Pulsa Dibujar recuadro y toca dos esquinas opuestas del área.';}
+window.portalPage=function(name){if(!['mapa','reportes','noticias'].includes(name))name='mapa';if(name!=='mapa'&&(window.portalDrawing||bounds))cancel();document.querySelectorAll('.portal-page').forEach(p=>p.hidden=p.id!=='pagina-'+name);document.querySelectorAll('.bottom-nav-btn').forEach(b=>{const a=b.dataset.page===name;b.classList.toggle('nav-btn-active',a);b.setAttribute('aria-selected',String(a));});if(name==='mapa'&&map){requestAnimationFrame(()=>map.invalidateSize({pan:false}));setTimeout(()=>map.invalidateSize({pan:false}),150);}window.scrollTo({top:0,behavior:'auto'});};
+document.querySelectorAll('.bottom-nav-btn').forEach(b=>b.addEventListener('click',()=>window.portalPage(b.dataset.page)));
+window.portalCorner=function(p){if(!corner){corner=p;$('redStatus').textContent='Primera esquina elegida. Toca la esquina opuesta.';return;}const b=L.latLngBounds(corner,p);if(b.getNorth()-b.getSouth()<.00001||b.getEast()-b.getWest()<.00001){toast('Elige una esquina opuesta más alejada.');return;}bounds=b;if(preview)map.removeLayer(preview);preview=L.rectangle(b,{color:'#ef4444',fillOpacity:.30,dashArray:'6 5',interactive:false}).addTo(map);window.portalDrawing=false;document.body.classList.remove('red-mode');$('redStatus').textContent='Recuadro listo. Completa los campos y pulsa Guardar zona roja.';};
+$('redStart').onclick=()=>{if(!map){toast('El mapa todavía no está disponible.');return;}cancel();window.portalDrawing=true;document.body.classList.add('red-mode');$('redStatus').textContent='Toca la primera esquina del recuadro en el mapa.';};$('redCancel').onclick=cancel;document.addEventListener('keydown',e=>{if(e.key==='Escape')cancel();});
+function makeZone(d){const c=d.coords;if(!Array.isArray(c)||c.length!==4||!c.every(p=>Array.isArray(p)&&p.length===2&&p.every(Number.isFinite)&&Math.abs(p[0])<=90&&Math.abs(p[1])<=180))return null;const n=String(d.rawName||d.name||'Zona manual').slice(0,90),t=String(d.rawTown||d.municipality||'Localidad').slice(0,90),note=String(d.rawNote||'').slice(0,300);return {id:/^manual-[a-zA-Z0-9-]+$/.test(String(d.id))?String(d.id):'manual-'+Date.now(),manual:true,rawName:n,rawTown:t,rawNote:note,name:safe(n),localityKey:safe(t),municipality:safe(t),keywords:[norm(n)],category:'red',shape:'polygon',coords:c,center:[c.reduce((a,p)=>a+p[0],0)/4,c.reduce((a,p)=>a+p[1],0)/4],rule:'ZONA ROJA MANUAL · NO ENTREGAR ≥ 6:30 PM',notes:safe(note||'Zona marcada manualmente por el conductor; sin verificación oficial.')};}
+function rows(){const list=$('manualRows');list.replaceChildren();ZONES.filter(z=>z.manual).forEach(z=>{const row=document.createElement('div'),label=document.createElement('span'),actions=document.createElement('div'),view=document.createElement('button'),del=document.createElement('button');label.textContent=z.rawName||z.name;view.type=del.type='button';view.className=del.className='portal-btn';view.textContent='Ver en mapa';del.textContent='Eliminar';view.onclick=()=>{if(map)focusZone(z.id);};del.onclick=()=>{if(!confirm('¿Eliminar la zona manual '+(z.rawName||z.name)+'?'))return;if(!save(key,ZONES.filter(x=>x.manual&&x.id!==z.id)))return;ZONES.splice(ZONES.indexOf(z),1);if(map)renderMapZones();renderSidebarList();rows();counts();toast('Zona eliminada.');};actions.append(view,del);row.append(label,actions);list.append(row);});}
+const stored=read(key,[]);if(Array.isArray(stored))stored.slice(0,500).forEach(d=>{if(d&&d.manual){const z=makeZone(d);if(z&&!ZONES.some(x=>x.id===z.id))ZONES.push(z);}});
+$('redForm').onsubmit=e=>{e.preventDefault();if(!bounds){toast('Primero dibuja el recuadro en el mapa.');return;}const n=$('redName').value.trim(),t=$('redTown').value.trim();if(!n||!t)return;const b=bounds,z=makeZone({id:'manual-'+Date.now()+'-'+Math.random().toString(36).slice(2,8),rawName:n,rawTown:t,rawNote:$('redNote').value.trim(),coords:[[b.getSouth(),b.getWest()],[b.getSouth(),b.getEast()],[b.getNorth(),b.getEast()],[b.getNorth(),b.getWest()]]});if(!z||!save(key,[...ZONES.filter(x=>x.manual),z]))return;ZONES.push(z);cancel();$('chkRed').checked=true;renderMapZones();renderSidebarList();rows();counts();$('redForm').reset();$('redStatus').textContent='Zona roja guardada en este navegador.';toast('Zona roja agregada al mapa y al evaluador.');};
+const title=$('portalTitle'),email=$('portalEmail'),dialog=$('profileEditor'),profile=read('shipsat_portal_profile_v2',null);if(profile&&typeof profile.title==='string'&&typeof profile.email==='string'){title.textContent=profile.title;email.textContent=profile.email;}
+$('editPortal').onclick=()=>{$('editTitle').value=title.textContent.trim();$('editEmail').value=email.textContent.trim();dialog.showModal();};$('profileCancel').onclick=()=>dialog.close();$('profileForm').onsubmit=e=>{e.preventDefault();const p={title:$('editTitle').value.trim(),email:$('editEmail').value.trim()};if(!p.title||!p.email||!save('shipsat_portal_profile_v2',p))return;title.textContent=p.title;email.textContent=p.email;dialog.close();toast('Título y correo actualizados.');};
+function ready(){if(!map){$('mapMessage').hidden=false;$('mapMessage').textContent='No se pudo cargar el mapa. Comprueba tu conexión o recarga la página. Las pestañas siguen disponibles.';return;}$('mapMessage').hidden=true;map.invalidateSize({pan:false});map.on('mousemove',e=>{if(window.portalDrawing&&corner){const b=L.latLngBounds(corner,e.latlng);if(!preview)preview=L.rectangle(b,{color:'#ef4444',fillOpacity:.25,dashArray:'6 5',interactive:false}).addTo(map);else preview.setBounds(b);}});rows();counts();}
+window.addEventListener('DOMContentLoaded',()=>{if(map||window.L){ready();return;}$('mapMessage').hidden=false;$('mapMessage').textContent='Reintentando cargar el mapa…';const css=document.createElement('link');css.rel='stylesheet';css.href='https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css';document.head.append(css);const script=document.createElement('script');script.src='https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js';script.onload=()=>{try{if(!map)initMap();}catch(error){console.error(error);}ready();};script.onerror=ready;document.head.append(script);});
+window.portalPage('mapa');rows();counts();
 })();
 </script></body>
 </html>
